@@ -20,7 +20,7 @@
  * @example
  * public static $marcjan = array(...);
  */
-class Environment {
+class CakeEnvironment {
 
 /**
  * Default configuration
@@ -87,7 +87,7 @@ class Environment {
 		$env = getenv('CAKE_ENV');
 
 		if (!empty($env) && isset(self::${$env})) {
-			$items = array_replace_recursive($items,self::${$env});
+			$items = array_replace_recursive($items, self::${$env});
 		}
 
 		Configure::write($items);
