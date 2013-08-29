@@ -82,12 +82,12 @@ class CakeEnvironment {
  * @return void
  */
 	public static function load() {
-		$items = self::$default;
+		$items = static::$default;
 
 		$env = getenv('CAKE_ENV');
 
-		if (!empty($env) && isset(self::${$env})) {
-			$items = array_replace_recursive($items, self::${$env});
+		if (!empty($env) && isset(static::${$env})) {
+			$items = array_replace_recursive($items, static::${$env});
 		}
 
 		Configure::write($items);
