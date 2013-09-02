@@ -10,17 +10,13 @@ This class is used to set the correct Configuration settings for multiple Enviro
 
 ## Installation
 
-* Place the `environment.php`, `database.php` and `email.php` to your `app/Config` folder
+* Place the `environment.php.default`, `database.php.default` and `email.php.default` to your `app/Config` folder (without the .default of course)
 * Every Configuration setting for your application can be done threw this file
 * Set your settings
-* require the file in your bootstrap:
+* Load the plugin inside your bootstrap file, with also loading the bootstrap of the plugin:
 
 ```php
-/**
- * Include the Environment class and load all the settings of the environment
- */
-require_once dirname(__FILE__) . '/environment.php';
-Environment::load();
+CakePlugin::load('CakeEnvironment', array('bootstrap' => true));
 ```
 
 * You don't have to adjust `database.php` and `email.php` anymore, all the settings will be set for you, if you use all the files inside the repository.
