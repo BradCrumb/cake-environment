@@ -23,14 +23,16 @@ CakePlugin::load('CakeEnvironment', array('bootstrap' => true));
 
 ## Documentation
 
-The correct Configuration will be used according to the CAKE_ENV environment variable and has fallback to the 'default' configuration.
+By default the correct Configuration will be used according to the CAKE_ENV environment variable and has fallback to the 'default' configuration.
+
+It is also possible to check on hostname instead of CAKE_ENV variable. You can do that by passing a type to your environment, with as value "hostname".
 
 The Database and E-mail settings has to be modified in this class and nog in de Config/database.php or Config/email.php
 
 Every setting will be put in the Cake Configuration with Configure::write();
 
 Every environment is a static class attribute, $default is as it is called the default configuration and must always be present.
-When you have a custom Configuration for example CAKE_ENV=marcjan. Then the class attribute will be:
+When you have a custom Configuration for example CAKE_ENV=marcjan or hostname is "marcjan". Then the class attribute will be:
 
 ```php
 public static $marcjan = array(...);
@@ -66,6 +68,20 @@ public static $marcjan = array(
 ```
 
 When the CAKE_ENV environment variable is set to marcjan, the Environment class checks if there is a custom config for it (`$marcjan`). If so it merges that config with the `$default` config.
+
+If you want to check for the hostname instead of CAKE_ENV, simply add the 'type' key:
+
+```php
+public static $marcjan = array(
+	'type' => 'hostname',
+	'Database' => array(
+		'default' => array(
+			'login' => 'marc-jan',
+			'password' => '****'
+		)
+	)
+);
+```
 
 ## License
 GNU General Public License, version 3 (GPL-3.0)

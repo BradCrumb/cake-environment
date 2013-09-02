@@ -7,15 +7,17 @@
  * @license http://opensource.org/licenses/GPL-3.0 GNU GENERAL PUBLIC LICENSE
  *
  * This class is used to set the correct Configuration settings for multiple Environments.
- * The correct Configuration will be used according to the CAKE_ENV environment variable and
+ * By default the correct Configuration will be used according to the CAKE_ENV environment variable and
  * has fallback to the 'default' configuration.
+ *
+ * It is also possible to check on hostname instead of CAKE_ENV variable. You can do that by passing a type to your environment, with as value "hostname".
  *
  * The Database and E-mail settings has to be modified in this class and nog in de Config/database.php or Config/email.php
  *
  * Every setting will be put in the Cake Configuration with Configure::write();
  *
  * Every environment is a static class attribute, $default is as it is called the default configuration and must always be present.
- * When you have a custom Configuration for example CAKE_ENV=marcjan. Then the class attribute will be:
+ * When you have a custom Configuration for example CAKE_ENV=marcjan or hostname is "marcjan". Then the class attribute will be:
  *
  * @example
  * public static $marcjan = array(...);
@@ -30,6 +32,7 @@ class CakeEnvironment {
  * @var array
  */
 	public static $default = array(
+		'type' => 'env', //Default check Environment variable CAKE_ENV
 		'Database' => array(
 			'default' => array(
 				'datasource'	=> 'Database/Mysql',
@@ -76,7 +79,7 @@ class CakeEnvironment {
 	);
 
 /**
- * Check the CAKE_ENV environment variable and merge the settings with the default
+ * Check the CAKE_ENV environment variable or hostname and merge the settings with the default
  * and write them to the Cake Configuration
  *
  * @return void
@@ -86,8 +89,13 @@ class CakeEnvironment {
 
 		$env = getenv('CAKE_ENV');
 
-		if (!empty($env) && isset(static::${$env})) {
+		//Strip spaces and dashes so we get a variable name
+		$hostName = str_replace(array(' ', '-', '$'), '_', gethostname());
+
+		if (!empty($env) && isset(static::${$env}) && static::${$env}['type'] == 'env') {
 			$items = array_replace_recursive($items, static::${$env});
+		} elseif (!empty($hostname) && isset(static::${$hostName}) && static::${$hostname}['type'] == 'hostname') {
+			$items = array_replace_recursive($items, static::${$hostName});
 		}
 
 		Configure::write($items);

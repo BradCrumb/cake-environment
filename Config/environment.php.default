@@ -7,7 +7,7 @@
  * @license http://opensource.org/licenses/GPL-3.0 GNU GENERAL PUBLIC LICENSE
  *
  * This class is used to set the correct Configuration settings for multiple Environments.
- * The correct Cofiguration will be used according to the CAKE_ENV environment variable and
+ * The correct Configuration will be used according to the CAKE_ENV environment variable and
  * has fallback to the 'default' configuration.
  *
  * The Database and E-mail settings has to be modified in this class and nog in de Config/database.php or Config/email.php
