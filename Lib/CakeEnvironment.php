@@ -10,7 +10,8 @@
  * By default the correct Configuration will be used according to the CAKE_ENV environment variable and
  * has fallback to the 'default' configuration.
  *
- * It is also possible to check on hostname instead of CAKE_ENV variable. You can do that by passing a type to your environment, with as value "hostname".
+ * It is also possible to check on hostname instead of CAKE_ENV variable.
+ * You can do that by passing a type to your environment, with as value "hostname" and a hostname key with the value of your hostname.
  *
  * The Database and E-mail settings has to be modified in this class and nog in de Config/database.php or Config/email.php
  *
@@ -90,14 +91,33 @@ class CakeEnvironment {
 		$env = getenv('CAKE_ENV');
 
 		//Strip spaces and dashes so we get a variable name
-		$hostName = str_replace(array(' ', '-', '$'), '_', gethostname());
+		$hostName = gethostname();
 
-		if (!empty($env) && isset(static::${$env}) && static::${$env}['type'] == 'env') {
+		if (!empty($env) && isset(static::${$env}) && (!isset(static::${$env}['type']) || static::${$env}['type'] == 'env')) {
 			$items = array_replace_recursive($items, static::${$env});
-		} elseif (!empty($hostname) && isset(static::${$hostName}) && static::${$hostname}['type'] == 'hostname') {
-			$items = array_replace_recursive($items, static::${$hostName});
+		} elseif (!empty($hostName) && $hostEnv = self::__findEnvByHostName($hostName)) {
+			$items = array_replace_recursive($items, $hostEnv);
 		}
 
 		Configure::write($items);
+	}
+
+/**
+ * Search for an environment according to a hostname
+ *
+ * @param String $hostName A hostname to search for
+ *
+ * @return array The founded Environment
+ */
+	private static function __findEnvByHostName($hostName) {
+		$envs = get_class_vars('Environment');
+
+		foreach ($envs as $env) {
+			if (isset($env['type']) && $env['type'] == 'hostname' && $env['hostname'] == $hostName) {
+				return $env;
+			}
+		}
+
+		return null;
 	}
 }

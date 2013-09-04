@@ -25,7 +25,7 @@ CakePlugin::load('CakeEnvironment', array('bootstrap' => true));
 
 By default the correct Configuration will be used according to the CAKE_ENV environment variable and has fallback to the 'default' configuration.
 
-It is also possible to check on hostname instead of CAKE_ENV variable. You can do that by passing a type to your environment, with as value "hostname".
+It is also possible to check on hostname instead of CAKE_ENV variable. You can do that by passing a type to your environment, with as value "hostname" and a hostname key with the value of your hostname.
 
 The Database and E-mail settings has to be modified in this class and nog in de Config/database.php or Config/email.php
 
@@ -74,6 +74,7 @@ If you want to check for the hostname instead of CAKE_ENV, simply add the 'type'
 ```php
 public static $marcjan = array(
 	'type' => 'hostname',
+	'hostname' => 'marcjan',
 	'Database' => array(
 		'default' => array(
 			'login' => 'marc-jan',
